@@ -4,7 +4,6 @@ import space.exys.yabs.model.Account
 import space.exys.yabs.model.AccountId
 import java.sql.Connection
 
-// TODO remove open
 open class AccountsRepository {
 
     open fun save(connection: Connection, account: Account): Account {

@@ -6,7 +6,6 @@ import space.exys.yabs.persistance.AccountsRepository
 import space.exys.yabs.persistance.BalanceChangesRepository
 import space.exys.yabs.web.model.AccountDto
 import space.exys.yabs.web.model.OwnerDto
-import java.math.BigDecimal
 import javax.inject.Inject
 
 class GetAccountDetailsQuery @Inject constructor(

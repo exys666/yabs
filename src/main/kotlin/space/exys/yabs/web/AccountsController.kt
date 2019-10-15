@@ -14,9 +14,7 @@ import space.exys.yabs.web.model.AccountDto
 import space.exys.yabs.web.model.CreateAccountDto
 import space.exys.yabs.web.model.CreateTransferDto
 import space.exys.yabs.web.model.OwnerDto
-import java.lang.Exception
 import java.math.BigDecimal
-import java.util.*
 import javax.inject.Inject
 
 class AccountsController @Inject constructor(
@@ -41,9 +39,9 @@ class AccountsController @Inject constructor(
     }
 
     fun get(ctx: Context) {
-            val accountId = getAccountId(ctx)
-            val account = getAccountDetailsQuery.execute(accountId) ?: throw NotFoundResponse()
-            ctx.json(account)
+        val accountId = getAccountId(ctx)
+        val account = getAccountDetailsQuery.execute(accountId) ?: throw NotFoundResponse()
+        ctx.json(account)
     }
 
     fun createTransfer(ctx: Context) {
