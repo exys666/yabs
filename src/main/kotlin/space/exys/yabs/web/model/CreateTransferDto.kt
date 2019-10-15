@@ -5,10 +5,9 @@ import com.fasterxml.jackson.databind.annotation.JsonSerialize
 import space.exys.yabs.model.AccountId
 import java.math.BigDecimal
 
-data class AccountDto(
+data class CreateTransferDto(
         @JsonSerialize(using = AccountId.Serializer::class)
         @JsonDeserialize(using = AccountId.Deserializer::class)
-        val id: AccountId,
-        val balance: BigDecimal,
-        val owner: OwnerDto
+        val accountId: AccountId,
+        val amount: BigDecimal
 )

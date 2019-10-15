@@ -4,9 +4,10 @@ import space.exys.yabs.model.Account
 import space.exys.yabs.model.AccountId
 import java.sql.Connection
 
-object AccountsRepository {
+// TODO remove open
+open class AccountsRepository {
 
-    fun save(connection: Connection, account: Account): Account {
+    open fun save(connection: Connection, account: Account): Account {
         connection.prepareStatement("""
             INSERT INTO account (id, owner_first_name, owner_last_name)
             VALUES (?, ?, ?)
@@ -18,7 +19,7 @@ object AccountsRepository {
         return account
     }
 
-    fun findById(connection: Connection, id: AccountId): Account? {
+    open fun findById(connection: Connection, id: AccountId): Account? {
         val results = connection.prepareStatement("""
             SELECT owner_first_name, owner_last_name
             FROM account
@@ -36,5 +37,26 @@ object AccountsRepository {
         }
         return null
     }
+
+    open fun findByIdAndLock(connection: Connection, id: AccountId): Account? {
+        val results = connection.prepareStatement("""
+            SELECT owner_first_name, owner_last_name
+            FROM account
+            WHERE id = ?
+            FOR UPDATE
+        """.trimIndent()).apply {
+            setString(1, id.toString())
+        }.executeQuery()
+
+        if (results.next()) {
+            return Account(
+                    id = id,
+                    ownerFirstName = results.getString("owner_first_name"),
+                    ownerLastName = results.getString("owner_last_name")
+            )
+        }
+        return null
+    }
+
 
 }

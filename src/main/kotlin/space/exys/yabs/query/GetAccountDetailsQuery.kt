@@ -1,22 +1,28 @@
 package space.exys.yabs.query
 
-import space.exys.yabs.config.Database
+import space.exys.yabs.db.Database
 import space.exys.yabs.model.AccountId
 import space.exys.yabs.persistance.AccountsRepository
+import space.exys.yabs.persistance.BalanceChangesRepository
 import space.exys.yabs.web.model.AccountDto
 import space.exys.yabs.web.model.OwnerDto
 import java.math.BigDecimal
+import javax.inject.Inject
 
-object GetAccountDetailsQuery {
+class GetAccountDetailsQuery @Inject constructor(
+        private val db: Database,
+        private val accountsRepository: AccountsRepository,
+        private val balanceChangesRepository: BalanceChangesRepository
+) {
 
     fun execute(id: AccountId): AccountDto? =
-            Database.connection.use { con ->
-                AccountsRepository.findById(con, id)
+            db.connection.use { connection ->
+                accountsRepository.findById(connection, id)
                         ?.let { account ->
                             AccountDto(
                                     id = account.id,
                                     owner = OwnerDto(account.ownerFirstName, account.ownerLastName),
-                                    balance = BigDecimal("0.00")
+                                    balance = balanceChangesRepository.getBalance(connection, id)
                             )
                         }
             }
